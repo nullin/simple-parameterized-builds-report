@@ -15,20 +15,6 @@
     <name>Simple Parameterized Builds Report Plugin</name>
     <url>https://wiki.jenkins-ci.org/display/JENKINS/Simple+Parameterized+Builds+Report+plugin</url>
 
-    <repositories>
-        <repository>
-            <id>repo.jenkins-ci.org</id>
-            <url>http://repo.jenkins-ci.org/public/</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>repo.jenkins-ci.org</id>
-            <url>http://repo.jenkins-ci.org/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <developers>
         <developer>
             <id>nalin_makar</id>
@@ -46,8 +32,9 @@
     </dependencies>
 
     <scm>
-        <connection>scm:git:git://github.com/nullin/parameterized-builds-report-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:nullin/parameterized-builds-report-plugin.git</developerConnection>
+        <connection>scm:git:git://github.com/nullin/simple-parameterized-builds-report.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/nullin/simple-parameterized-builds-report.git</developerConnection>
+        <url>https://github.com/nullin/simple-parameterized-builds-report</url>
     </scm>
 
     <properties>
