@@ -1,0 +1,21 @@
+table.report {
+    border-style: solid;
+    border-color: #bbb;
+    border-spacing: 0;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.report .text {
+    margin-top: -1px;
+}
+
+table.report th {
+    padding-left: 0.5em;
+    font-weight: bold;
+    background-color: #f0f0f0;
+}
+
+table.report th, table.report td {
+  width: 10%;
+}
