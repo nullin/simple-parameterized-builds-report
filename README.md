@@ -3,15 +3,6 @@ Simple Parameterized Builds Report plugin
 
 This Jenkins plugin makes it easy to visualize the various builds for a parameterized project that were run using the same set of parameters.
 
-Installing
-----------
-
-The plugin is not yet available from jenkins-ci.org. You can simply get the source and build it using
-
-    mvn package
-
-and then uploading the `.hpi` file the `target` folder
-
 Usage
 -----
 
@@ -22,6 +13,6 @@ Only the builds that match the parameter set used in the latest build are consid
 Release Notes
 -------------
 
-### 1.0
+### 1.0 (01/01/2013)
 
 * Initial release
