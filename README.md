@@ -13,6 +13,10 @@ Only the builds that match the parameter set used in the latest build are consid
 Release Notes
 -------------
 
+### 1.1 (01/01/2013)
+
+* Fixed: Only display completed builds in the table
+
 ### 1.0 (01/01/2013)
 
 * Initial release
