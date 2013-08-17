@@ -1,14 +1,14 @@
 package com.nullin.jenkins.spbr;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Action to display builds categorized by parameters used to run them.
@@ -52,6 +52,11 @@ public class SimpleParameterizedBuildsReportAction implements Action {
         Set<String> latestParamKeySet = project.getLastBuild().getBuildVariables().keySet();
 
         for (AbstractBuild build : builds) {
+            if (build.isBuilding()) {
+                //skip over builds that are still running
+                continue;
+            }
+
             Map<String, String> vars = build.getBuildVariables();
             if (latestParamKeySet.equals(vars.keySet())) {
                 if (buildsMap.get(vars).size() == MAX_BUILDS_PER_PARAM_DEF) {
