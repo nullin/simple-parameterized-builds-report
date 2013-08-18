@@ -13,7 +13,7 @@ Only the builds that match the parameter set used in the latest build are consid
 Release Notes
 -------------
 
-### upcoming
+### 1.1 (08/17/2013)
 
 * Fixed: JENKINS-19085 - Mask password properties
 * Fixed: JENKINS-18565 - Only show build parameters and not all the user defined build variables
