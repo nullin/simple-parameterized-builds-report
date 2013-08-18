@@ -37,7 +37,7 @@ public class SimpleParameterizedBuildsReportAction implements Action {
     }
 
     public String getDisplayName() {
-        return "Simple Parameterized Builds Report";
+        return "Parameterized Builds Report";
     }
 
     public String getUrlName() {
