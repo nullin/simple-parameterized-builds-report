@@ -64,7 +64,7 @@ private showTable(Collection<AbstractBuild> builds) {
         br()
 
         if (buildsMap.containsKey(null)) {
-            p("Following builds were built using a parameter set other than that used for the latest build. (Hence, they were not categorized in the table above)")
+            p("Following builds were built using a parameter set other than that used for the latest build. Hence, they were not categorized in the table above")
             List<AbstractBuild> _builds = buildsMap.get(null)
             ul() {
                 for (build in _builds) {
