@@ -1,6 +1,9 @@
 package com.nullin.jenkins.spbr;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -9,6 +12,11 @@ import com.google.common.collect.Multimap;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
+import hudson.model.ParameterDefinition;
+import hudson.model.ParameterValue;
+import hudson.model.ParametersAction;
+import hudson.model.ParametersDefinitionProperty;
+import hudson.model.PasswordParameterDefinition;
 
 /**
  * Action to display builds categorized by parameters used to run them.
@@ -39,7 +47,7 @@ public class SimpleParameterizedBuildsReportAction implements Action {
     /**
      * Gets at most {@code MAX_BUILDS_PER_PARAM_DEF} builds per set of parameter values as a map.
      *
-     * @param builds all possible builds to look at to generate the map
+     * @param builds all possible builds to look at in order to generate the map
      * @return
      */
     public Multimap<Map<String, String>, AbstractBuild> getBuildsMap(Collection<AbstractBuild> builds) {
@@ -49,7 +57,15 @@ public class SimpleParameterizedBuildsReportAction implements Action {
             return buildsMap;
         }
 
-        Set<String> latestParamKeySet = project.getLastBuild().getBuildVariables().keySet();
+        final ParametersDefinitionProperty paramDefProp = project.getProperty(ParametersDefinitionProperty.class);
+        Set<String> latestParamKeySet = new HashSet<String>();
+        for (final ParameterDefinition definition : paramDefProp.getParameterDefinitions()) {
+            if (definition.getType().equals(PasswordParameterDefinition.class.getSimpleName())) {
+                continue;
+            }
+            final String name = definition.getName();
+            latestParamKeySet.add(name);
+        }
 
         for (AbstractBuild build : builds) {
             if (build.isBuilding()) {
@@ -57,9 +73,9 @@ public class SimpleParameterizedBuildsReportAction implements Action {
                 continue;
             }
 
-            Map<String, String> vars = build.getBuildVariables();
-            if (latestParamKeySet.equals(vars.keySet())) {
-                if (buildsMap.get(vars).size() == MAX_BUILDS_PER_PARAM_DEF) {
+            Map<String, String> paramsMap = getParameterValues(build);
+            if (latestParamKeySet.equals(paramsMap.keySet())) {
+                if (buildsMap.get(paramsMap).size() == MAX_BUILDS_PER_PARAM_DEF) {
                     /*
                      We don't want to display too many builds either. So, limiting it here.
                      */
@@ -69,7 +85,7 @@ public class SimpleParameterizedBuildsReportAction implements Action {
                  * We only care about the builds that are built using the parameters that
                  * match the ones used in latest build
                  */
-                buildsMap.put(vars, build);
+                buildsMap.put(paramsMap, build);
             } else {
                 /*
                  * Any build not matching the criteria gets added to the default null key.
@@ -79,6 +95,19 @@ public class SimpleParameterizedBuildsReportAction implements Action {
 
         }
         return buildsMap;
+    }
+
+    private Map<String, String> getParameterValues(AbstractBuild build) {
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        List<ParameterValue> paramVals = build.getAction(ParametersAction.class).getParameters();
+
+        for (ParameterValue paramVal : paramVals) {
+            if (paramVal.isSensitive()) {
+                continue;
+            }
+            paramsMap.put(paramVal.getName(), paramVal.createVariableResolver(build).resolve(paramVal.getName()));
+        }
+        return paramsMap;
     }
 
     public AbstractProject<?, ?> getProject() {

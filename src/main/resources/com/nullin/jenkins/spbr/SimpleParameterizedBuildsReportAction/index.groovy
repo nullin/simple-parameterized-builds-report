@@ -43,16 +43,17 @@ private showTable(Collection<AbstractBuild> builds) {
 
             List<AbstractBuild> _builds = buildsMap.get(key)
             tr() {
-                td() {
+                td(style: "padding:5px") {
                     for (String _key: key.keySet()) {
-                        text(_key + ": " + key.get(_key))
+                        b() { text(_key) }
+                        text(": " + key.get(_key))
                         br()
                     }
                 }
 
                 for (build in _builds) {
-                    td(bgcolor: "${build.getIconColor().getHtmlBaseColor()}", padding: 5) {
-                        showEntry(build)
+                    td(bgcolor: "${build.getIconColor().getHtmlBaseColor()}", style: "padding:5px") {
+                        showBuildDetails(build)
                     }
                   }
                 }
