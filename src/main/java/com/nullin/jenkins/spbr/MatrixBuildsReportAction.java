@@ -50,7 +50,8 @@ public class MatrixBuildsReportAction implements Action {
         }
 
         List<MatrixRun> mr =  project.getLastBuild().getRuns();
-        Set<String>  latestParamKeySet =  mr.get(mr.size()-1).getBuildVariables().keySet();
+        //Set<String>  latestParamKeySet =  mr.get(mr.size()-1).getBuildVariables().keySet();
+        Set<String>  latestParamKeySet =  mr.get(0).getBuildVariables().keySet();
 
         for (MatrixBuild build : builds){
             for (MatrixRun r: build.getRuns()){
@@ -69,6 +70,15 @@ public class MatrixBuildsReportAction implements Action {
                     * match the ones used in latest build
                     */
                     buildsMap.put(vars, r);
+                //}else if(latestParamKeySet.containsAll(vars.keySet())){
+                //    //so the latest build has added to the parameters(but not removed any)
+                //    Set<String> diff = new HashSet<String>(latestParamKeySet);
+                //    diff.removeAll(vars.keySet());
+                //
+                //    for (String v: diff){
+                //        vars.put(v, "Unused");
+                //    }
+                //    buildsMap.put(vars, r);
                 } else {
                     /*
                     * Any build not matching the criteria gets added to the default null key.
