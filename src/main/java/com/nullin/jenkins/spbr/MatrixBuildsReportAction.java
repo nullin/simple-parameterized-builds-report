@@ -7,6 +7,7 @@ import hudson.model.Action;
 import hudson.matrix.MatrixProject;
 import hudson.matrix.MatrixBuild;
 import hudson.matrix.MatrixRun;
+import hudson.util.RunList;
 
 import java.util.*;
 
@@ -42,43 +43,54 @@ public class MatrixBuildsReportAction implements Action {
      * @param builds all possible builds to look at to generate the map
      * @return
      */
-    public Multimap<Map<String, String>, MatrixRun> getBuildsMap(Collection<MatrixBuild> builds) {
+    public Multimap<Map<String, String>, MatrixRun> getBuildsMap(RunList<MatrixBuild> builds) {
         Multimap<Map<String, String>, MatrixRun> buildsMap = ArrayListMultimap.create();
 
         if (builds.isEmpty()) {
             return buildsMap;
         }
 
-        List<MatrixRun> mr =  project.getLastBuild().getRuns();
-        //Set<String>  latestParamKeySet =  mr.get(mr.size()-1).getBuildVariables().keySet();
-        Set<String>  latestParamKeySet =  mr.get(0).getBuildVariables().keySet();
+        //List<MatrixRun> mr =  builds.getLastBuild().getExactRuns();
+        //List<MatrixRun> mr =  builds.limit(1);
+        //List<MatrixRun> mr = project.getLastBuild().getBuildVariables().keySet();
+        MatrixBuild mb = builds.getLastBuild();
+        List<MatrixRun> mr = mb.getExactRuns();
 
-        for (MatrixBuild build : builds){
+        if(mr.size() == 0) {
+            //there is a build but it has no axes so there are no runs
+            return buildsMap;
+        }
+
+
+        Set<String>  latestParamKeySet =  mr.get(mr.size()-1).getBuildVariables().keySet();
+
+        MatrixBuild build = builds.getLastBuild();
             for (MatrixRun r: build.getRuns()){
-
                 Map<String, String> vars = r.getBuildVariables();
 
                 if (latestParamKeySet.equals(vars.keySet())) {
-                    if (buildsMap.get(vars).size() == MAX_BUILDS_PER_PARAM_DEF) {
-                        /*
-                        We don't want to display too many builds either. So, limiting it here.
-                        */
-                        continue;
+                    while(r != null){
+                        if (buildsMap.get(vars).size() == MAX_BUILDS_PER_PARAM_DEF) {
+                            continue;
+                        }
+                        buildsMap.put(vars, r);
+                        r = r.getPreviousBuild();
                     }
-                    /*
-                    * We only care about the builds that are built using the parameters that
-                    * match the ones used in latest build
-                    */
-                    buildsMap.put(vars, r);
-                //}else if(latestParamKeySet.containsAll(vars.keySet())){
-                //    //so the latest build has added to the parameters(but not removed any)
-                //    Set<String> diff = new HashSet<String>(latestParamKeySet);
-                //    diff.removeAll(vars.keySet());
-                //
-                //    for (String v: diff){
-                //        vars.put(v, "Unused");
-                //    }
-                //    buildsMap.put(vars, r);
+                }else if(latestParamKeySet.containsAll(vars.keySet())){
+                    //so the latest build has added to the parameters(but not removed any)
+                    Set<String> diff = new HashSet<String>(latestParamKeySet);
+                    diff.removeAll(vars.keySet());
+
+                    for (String v: diff){
+                        vars.put(v, "Unused");
+                    }
+                    while(r != null){
+                        if (buildsMap.get(vars).size() == MAX_BUILDS_PER_PARAM_DEF) {
+                            continue;
+                        }
+                        buildsMap.put(vars, r);
+                        r = r.getPreviousBuild();
+                    }
                 } else {
                     /*
                     * Any build not matching the criteria gets added to the default null key.
@@ -87,7 +99,7 @@ public class MatrixBuildsReportAction implements Action {
                 }
             }
 
-        }
+        //}
         return buildsMap;
     }
 
