@@ -102,9 +102,11 @@ public class MatrixBuildsReportActionTest extends HudsonTestCase {
         }
 
         buildsMap = action.getBuildsMap(project.getBuilds());
-        //3 x 3 + 27 from previous = 36 keys
-        assertEquals(9, buildsMap.keySet().size());
-        assertEquals(9, buildsMap.values().size());
+        //3 x 3 + 1 for null
+        assertEquals(10, buildsMap.keySet().size());
+
+        //27 for first test 9 for this one
+        assertEquals(36, buildsMap.values().size());
 
         ax.remove(axis2);
         project.setAxes(ax);
@@ -118,9 +120,11 @@ public class MatrixBuildsReportActionTest extends HudsonTestCase {
         }
 
         buildsMap = action.getBuildsMap(project.getBuilds());
-        //3 + 36 from previous = 39 keys
-        assertEquals(3, buildsMap.keySet().size());
-        assertEquals(3, buildsMap.values().size());
+        //3 + 1 for null
+        assertEquals(4, buildsMap.keySet().size());
+
+        //36 for previous + 3
+        assertEquals(39, buildsMap.values().size());
 
         ax.add(axis2);
         project.setAxes(ax);
@@ -134,9 +138,11 @@ public class MatrixBuildsReportActionTest extends HudsonTestCase {
         }
 
         buildsMap = action.getBuildsMap(project.getBuilds());
-        //39 keys the same
-        assertEquals(12, buildsMap.keySet().size());
-        assertEquals(12, buildsMap.values().size());
+        //3 * 3 + 3 for one axis builds and 1 for null
+        assertEquals(13, buildsMap.keySet().size());
+
+        //39 + 9 here
+        assertEquals(48, buildsMap.values().size());
 
         ax.add(axis3);
         project.setAxes(ax);
@@ -150,9 +156,11 @@ public class MatrixBuildsReportActionTest extends HudsonTestCase {
         }
 
         buildsMap = action.getBuildsMap(project.getBuilds());
-        //39 keys the same
-        assertEquals(12, buildsMap.keySet().size());
-        assertEquals(12, buildsMap.values().size());
+        //(3 x 3 x 3) + (3 x 3) + 3 = 39 keys
+        assertEquals(39, buildsMap.keySet().size());
+
+        //48 previous + 27 here  (no null now)
+        assertEquals(75, buildsMap.values().size());
     }
 
 }
