@@ -13,6 +13,10 @@ Only the builds that match the parameter set used in the latest build are consid
 Release Notes
 -------------
 
+### Upcoming
+
+* Added: Configuration options for report
+
 ### 1.1 (08/17/2013)
 
 * Fixed: JENKINS-19085 - Mask password properties
