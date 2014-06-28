@@ -13,7 +13,7 @@ Only the builds that match the parameter set used in the latest build are consid
 Release Notes
 -------------
 
-### Upcoming
+### 1.2 (6/28/2014)
 
 * Added: Configuration options for report
 * Fixed: JENKINS-23604 - NPE when all builds are not parameterized
