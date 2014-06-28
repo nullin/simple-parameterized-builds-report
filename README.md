@@ -6,9 +6,12 @@ This Jenkins plugin makes it easy to visualize the various builds for a paramete
 Usage
 -----
 
-Once installed, a new link "Simple Parameterized Builds Report" should show up in the sidebar for all parameterized jobs. Following that link will display a table where (at max, latest 10) builds for a given parameter set are displayed, grouped together based on the parameters used to invoke the builds.
+Once installed, a new link "Parameterized Builds Report" should show up in the sidebar for all parameterized jobs. Following that link will display a table where (at max, latest 10) builds for a given parameter set are displayed, grouped together based on the parameters used to invoke the builds.
 
 Only the builds that match the parameter set used in the latest build are considered for inclusion in the table.
+
+Also, users can configure the parameters that should appear in the reports by setting inclusion/exclusion lists while 
+configuring the job.
 
 Release Notes
 -------------
