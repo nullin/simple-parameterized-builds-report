@@ -1,6 +1,7 @@
 package com.nullin.jenkins.spbr;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -99,8 +100,13 @@ public class SimpleParameterizedBuildsReportAction implements Action {
 
     private Map<String, String> getParameterValues(AbstractBuild build) {
         Map<String, String> paramsMap = new HashMap<String, String>();
-        List<ParameterValue> paramVals = build.getAction(ParametersAction.class).getParameters();
+        ParametersAction action = build.getAction(ParametersAction.class);
 
+        if (action == null) {
+            return Collections.emptyMap();
+        }
+
+        List<ParameterValue> paramVals = action.getParameters();
         for (ParameterValue paramVal : paramVals) {
             if (paramVal.isSensitive()) {
                 continue;

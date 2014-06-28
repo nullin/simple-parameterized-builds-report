@@ -16,6 +16,7 @@ Release Notes
 ### Upcoming
 
 * Added: Configuration options for report
+* Fixed: JENKINS-23604 - NPE when all builds are not parameterized
 
 ### 1.1 (08/17/2013)
 
