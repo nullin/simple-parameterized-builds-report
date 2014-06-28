@@ -1,5 +1,6 @@
 package com.nullin.jenkins.spbr;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -58,6 +59,21 @@ public class SimpleParameterizedBuildsReportAction implements Action {
             return buildsMap;
         }
 
+        //selected params will contain the set of properties to filter by
+        List<String> selectedParams = Collections.emptyList();
+        boolean isInclude = true;
+        SPBRConfigJobProperty configJobProperty = project.getProperty(SPBRConfigJobProperty.class);
+        if (configJobProperty != null) {
+            String includes = configJobProperty.includes;
+            String excludes = configJobProperty.excludes;
+            if (includes != null && !includes.trim().isEmpty()) {
+                selectedParams = getParameters(includes);
+            } else if(excludes != null && !excludes.trim().isEmpty()) {
+                selectedParams = getParameters(excludes);
+                isInclude = false;
+            }
+        }
+
         final ParametersDefinitionProperty paramDefProp = project.getProperty(ParametersDefinitionProperty.class);
         Set<String> latestParamKeySet = new HashSet<String>();
         for (final ParameterDefinition definition : paramDefProp.getParameterDefinitions()) {
@@ -65,7 +81,9 @@ public class SimpleParameterizedBuildsReportAction implements Action {
                 continue;
             }
             final String name = definition.getName();
-            latestParamKeySet.add(name);
+            if (shouldBeVisible(name, selectedParams, isInclude)) {
+                latestParamKeySet.add(name);
+            }
         }
 
         for (AbstractBuild build : builds) {
@@ -74,7 +92,7 @@ public class SimpleParameterizedBuildsReportAction implements Action {
                 continue;
             }
 
-            Map<String, String> paramsMap = getParameterValues(build);
+            Map<String, String> paramsMap = getParameterValues(build, selectedParams, isInclude);
             if (latestParamKeySet.equals(paramsMap.keySet())) {
                 if (buildsMap.get(paramsMap).size() == MAX_BUILDS_PER_PARAM_DEF) {
                     /*
@@ -98,7 +116,51 @@ public class SimpleParameterizedBuildsReportAction implements Action {
         return buildsMap;
     }
 
-    private Map<String, String> getParameterValues(AbstractBuild build) {
+    /**
+     * Splits the input by commas and returns the sanitized list of parameters
+     * @param str
+     * @return
+     */
+    List<String> getParameters(String str) {
+        String[] parts = str.split(",");
+        List<String> params = new ArrayList<String>(parts.length);
+        for (String part : parts) {
+            part = part.trim();
+            if (!part.isEmpty()) {
+                params.add(part);
+            }
+        }
+        return params;
+    }
+
+    /**
+     * @param param parameter name
+     * @param params list of parameters to filter by
+     * @param isInclude true, if list is the include list, false if it's the exclude list
+     * @return true, if the parameter should be included in list of parameters visible on the report
+     */
+    boolean shouldBeVisible(String param, List<String> params, boolean isInclude) {
+        if (params.isEmpty()) {
+            return true;
+        }
+
+        if (isInclude && params.contains(param)) {
+            return true;
+        } else if (!isInclude && !params.contains(param)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Map containing filtered parameters along with their values
+     * @param build build
+     * @param selectedParams list of parameters to filter by
+     * @param isInclude true, if list is the include list, false if it's the exclude list
+     * @return map containing key as the name of properties and value as the corresponding parameter values
+     */
+    private Map<String, String> getParameterValues(AbstractBuild build, List<String> selectedParams, boolean isInclude) {
         Map<String, String> paramsMap = new HashMap<String, String>();
         ParametersAction action = build.getAction(ParametersAction.class);
 
@@ -111,7 +173,9 @@ public class SimpleParameterizedBuildsReportAction implements Action {
             if (paramVal.isSensitive()) {
                 continue;
             }
-            paramsMap.put(paramVal.getName(), paramVal.createVariableResolver(build).resolve(paramVal.getName()));
+            if (shouldBeVisible(paramVal.getName(), selectedParams, isInclude)) {
+                paramsMap.put(paramVal.getName(), paramVal.createVariableResolver(build).resolve(paramVal.getName()));
+            }
         }
         return paramsMap;
     }
