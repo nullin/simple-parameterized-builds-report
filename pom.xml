@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>simple-parameterized-builds-report</artifactId>
-    <version>1.3</version>
+    <version>1.4-SNAPSHOT</version>
     <packaging>hpi</packaging>
 
     <name>Simple Parameterized Builds Report Plugin</name>
@@ -26,7 +26,7 @@
         <connection>scm:git:git://github.com/nullin/simple-parameterized-builds-report.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/nullin/simple-parameterized-builds-report.git</developerConnection>
         <url>https://github.com/nullin/simple-parameterized-builds-report</url>
-      <tag>simple-parameterized-builds-report-1.3</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <properties>
