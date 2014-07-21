@@ -74,15 +74,17 @@ public class SimpleParameterizedBuildsReportAction implements Action {
             }
         }
 
-        final ParametersDefinitionProperty paramDefProp = project.getProperty(ParametersDefinitionProperty.class);
+        ParametersDefinitionProperty paramDefProp = project.getProperty(ParametersDefinitionProperty.class);
         Set<String> latestParamKeySet = new HashSet<String>();
-        for (final ParameterDefinition definition : paramDefProp.getParameterDefinitions()) {
-            if (definition.getType().equals(PasswordParameterDefinition.class.getSimpleName())) {
-                continue;
-            }
-            final String name = definition.getName();
-            if (shouldBeVisible(name, selectedParams, isInclude)) {
-                latestParamKeySet.add(name);
+        if (paramDefProp != null) {
+            for (final ParameterDefinition definition : paramDefProp.getParameterDefinitions()) {
+                if (definition.getType().equals(PasswordParameterDefinition.class.getSimpleName())) {
+                    continue;
+                }
+                final String name = definition.getName();
+                if (shouldBeVisible(name, selectedParams, isInclude)) {
+                    latestParamKeySet.add(name);
+                }
             }
         }
 
