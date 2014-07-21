@@ -16,6 +16,9 @@ configuring the job.
 Release Notes
 -------------
 
+### 1.3 (7/20/2014)
+* Fixed: Fix possible NPE reported in JENKINS-23841
+
 ### 1.2 (6/28/2014)
 
 * Added: Configuration options for report
