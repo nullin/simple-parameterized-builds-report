@@ -17,7 +17,8 @@ Release Notes
 -------------
 
 ### upcoming
-* JENKINS-24928 - Spelling mistake
+* Fixed: JENKINS-24928 - Spelling mistake
+* Fixed: JENKINS-24927 - No table background colors
 
 ### 1.3 (7/20/2014)
 * Fixed: Fix possible NPE reported in JENKINS-23841

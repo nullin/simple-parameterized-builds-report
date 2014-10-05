@@ -52,7 +52,7 @@ private showTable(Collection<AbstractBuild> builds) {
                 }
 
                 for (build in _builds) {
-                    td(bgcolor: "${build.getIconColor().getHtmlBaseColor()}", style: "padding:5px") {
+                    td(style: "padding:5px;background-color:${build.getIconColor().getHtmlBaseColor()};") {
                         showBuildDetails(build)
                     }
                   }
