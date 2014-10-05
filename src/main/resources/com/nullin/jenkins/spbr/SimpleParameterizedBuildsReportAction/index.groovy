@@ -10,7 +10,7 @@ l.layout(title: "Simple Parameterized Builds Report", css: "/plugin/simple-param
   st.include(page: "sidepanel.jelly", it: my.project)
   l.main_panel() {
 
-    h1("Simple Parametized Builds Report")
+    h1("Simple Parameterized Builds Report")
     def builds = my.project.builds
     if (builds.empty) {
       text("No builds.")

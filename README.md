@@ -16,6 +16,9 @@ configuring the job.
 Release Notes
 -------------
 
+### upcoming
+* JENKINS-24928 - Spelling mistake
+
 ### 1.3 (7/20/2014)
 * Fixed: Fix possible NPE reported in JENKINS-23841
 
