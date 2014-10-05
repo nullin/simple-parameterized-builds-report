@@ -16,7 +16,7 @@ configuring the job.
 Release Notes
 -------------
 
-### upcoming
+### 1.4 (10/5/2014)
 * Fixed: JENKINS-24928 - Spelling mistake
 * Fixed: JENKINS-24927 - No table background colors
 
