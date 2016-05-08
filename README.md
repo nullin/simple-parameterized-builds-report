@@ -17,6 +17,7 @@ Release Notes
 -------------
 
 ### 1.5 (upcoming)
+* Fixed: [JENKINS-34525] Work around Groovy bug in Jenkins 2 (jglick)
 * Added: Support for Matrix Jobs (JeremyMarshall)
 
 ### 1.4 (10/5/2014)
