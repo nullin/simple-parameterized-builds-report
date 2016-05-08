@@ -16,6 +16,9 @@ configuring the job.
 Release Notes
 -------------
 
+### 1.5 (upcoming)
+* Added: Support for Matrix Jobs (JeremyMarshall)
+
 ### 1.4 (10/5/2014)
 * Fixed: JENKINS-24928 - Spelling mistake
 * Fixed: JENKINS-24927 - No table background colors
