@@ -10,7 +10,7 @@ l.layout(title: "Simple Parameterized Builds Report", css: "/plugin/simple-param
   st.include(page: "sidepanel.jelly", it: my.project)
   l.main_panel() {
 
-    h1("Simple Parametized Builds Report")
+    h1("Simple Parameterized Builds Report")
     def builds = my.project.builds
     if (builds.empty) {
       text("No builds.")
@@ -43,16 +43,17 @@ private showTable(Collection<AbstractBuild> builds) {
 
             List<AbstractBuild> _builds = buildsMap.get(key)
             tr() {
-                td() {
+                td(style: "padding:5px") {
                     for (String _key: key.keySet()) {
-                        text(_key + ": " + key.get(_key))
+                        b() { text(_key) }
+                        text(": " + key.get(_key))
                         br()
                     }
                 }
 
                 for (build in _builds) {
-                    td(bgcolor: "${build.getIconColor().getHtmlBaseColor()}", padding: 5) {
-                        showEntry(build)
+                    td(style: "padding:5px;background-color:${build.getIconColor().getHtmlBaseColor()};") {
+                        showBuildDetails(build)
                     }
                   }
                 }
@@ -63,7 +64,7 @@ private showTable(Collection<AbstractBuild> builds) {
         br()
 
         if (buildsMap.containsKey(null)) {
-            p("Following builds were built using a parameter set other than that used for the latest build. (Hence, they were not categorized in the table above)")
+            p("Following builds were built using a parameter set other than that used for the latest build. Hence, they were not categorized in the table above")
             List<AbstractBuild> _builds = buildsMap.get(null)
             ul() {
                 for (build in _builds) {
