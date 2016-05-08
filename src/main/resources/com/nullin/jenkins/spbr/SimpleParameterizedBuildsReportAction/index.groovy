@@ -20,7 +20,7 @@ l.layout(title: "Simple Parameterized Builds Report", css: "/plugin/simple-param
   }
 }
 
-private showTable(Collection<AbstractBuild> builds) {
+private showTable(/*Collection<AbstractBuild>*/ builds) {
     Multimap<Map<String, String>, AbstractBuild> buildsMap = my.getBuildsMap(builds);
 
     div() {
@@ -78,7 +78,7 @@ private showTable(Collection<AbstractBuild> builds) {
         }
     }
 
-private def showBuildDetails(AbstractBuild build) {
+private def showBuildDetails(/*AbstractBuild*/ build) {
       a(href: "${rootURL}/${build.url}") {
           text(build.displayName)
           br()
