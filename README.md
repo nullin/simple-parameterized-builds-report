@@ -16,7 +16,7 @@ configuring the job.
 Release Notes
 -------------
 
-### 1.5 (upcoming)
+### 1.5 (5/8/2016)
 * Fixed: [JENKINS-34525] Work around Groovy bug in Jenkins 2 (jglick)
 * Added: Support for Matrix Jobs (JeremyMarshall)
 
